@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Mobile App - Educase Assignment</title>
+    <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .mobile-container {
+            width: 375px;
+            height: 812px;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .status-bar {
+            height: 44px;
+            background: #000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .app-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .header {
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 16px;
+            text-align: center;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            color: #6c757d;
+            transition: all 0.3s ease;
+        }
+
+        .nav-tab.active {
+            color: #667eea;
+            background: white;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .nav-tab:hover {
+            background: #e9ecef;
+        }
+
+        .page-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e9ecef;
+        }
+
+        .card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #333;
+        }
+
+        .card p {
+            font-size: 14px;
+            color: #6c757d;
+            line-height: 1.6;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 8px 0;
+            width: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #6c757d;
+            border: 1px solid #dee2e6;
+        }
+
+        .btn-secondary:hover {
+            background: #e9ecef;
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .profile-section {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .list-item {
+            display: flex;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .list-item:last-child {
+            border-bottom: none;
+        }
+
+        .list-item-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            color: #667eea;
+        }
+
+        .list-item-content {
+            flex: 1;
+        }
+
+        .list-item-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .list-item-subtitle {
+            font-size: 14px;
+            color: #6c757d;
+        }
+
+        .bottom-nav {
+            height: 60px;
+            background: white;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding: 0 20px;
+        }
+
+        .bottom-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            color: #6c757d;
+        }
+
+        .bottom-nav-item.active {
+            color: #667eea;
+        }
+
+        .bottom-nav-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .bottom-nav-label {
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 425px) {
+            .mobile-container {
+                width: 100%;
+                height: 100vh;
+                border-radius: 0;
+                max-width: 425px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // Main App Component
+        function App() {
+            const [activeTab, setActiveTab] = useState('home');
+            const [loading, setLoading] = useState(false);
+
+            const handleTabChange = (tab) => {
+                setLoading(true);
+                setTimeout(() => {
+                    setActiveTab(tab);
+                    setLoading(false);
+                }, 300);
+            };
+
+            return (
+                <div className="mobile-container">
+                    <StatusBar />
+                    <div className="app-content">
+                        <Header />
+                        <NavigationTabs 
+                            activeTab={activeTab} 
+                            onTabChange={handleTabChange} 
+                        />
+                        <PageContent activeTab={activeTab} loading={loading} />
+                        <BottomNavigation 
+                            activeTab={activeTab} 
+                            onTabChange={handleTabChange} 
+                        />
+                    </div>
+                </div>
+            );
+        }
+
+        // Status Bar Component
+        function StatusBar() {
+            const [time, setTime] = useState(new Date());
+
+            useEffect(() => {
+                const timer = setInterval(() => {
+                    setTime(new Date());
+                }, 1000);
+                return () => clearInterval(timer);
+            }, []);
+
+            return (
+                <div className="status-bar">
+                    <span>{time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                    <span>●●●●● 100%</span>
+                </div>
+            );
+        }
+
+        // Header Component
+        function Header() {
+            return (
+                <div className="header">
+                    <h1>Educase Assignment</h1>
+                    <p>React Mobile App Implementation</p>
+                </div>
+            );
+        }
+
+        // Navigation Tabs Component
+        function NavigationTabs({ activeTab, onTabChange }) {
+            const tabs = [
+                { id: 'home', label: 'Home' },
+                { id: 'profile', label: 'Profile' },
+                { id: 'settings', label: 'Settings' }
+            ];
+
+            return (
+                <div className="nav-tabs">
+                    {tabs.map(tab => (
+                        <button
+                            key={tab.id}
+                            className={`nav-tab ${activeTab === tab.id ? 'active' : ''}`}
+                            onClick={() => onTabChange(tab.id)}
+                        >
+                            {tab.label}
+                        </button>
+                    ))}
+                </div>
+            );
+        }
+
+        // Page Content Component
+        function PageContent({ activeTab, loading }) {
+            if (loading) {
+                return (
+                    <div className="loading">
+                        <div className="spinner"></div>
+                    </div>
+                );
+            }
+
+            return (
+                <div className="page-content fade-in">
+                    {activeTab === 'home' && <HomePage />}
+                    {activeTab === 'profile' && <ProfilePage />}
+                    {activeTab === 'settings' && <SettingsPage />}
+                </div>
+            );
+        }
+
+        // Home Page Component
+        function HomePage() {
+            const [formData, setFormData] = useState({
+                name: '',
+                email: ''
+            });
+
+            const handleInputChange = (e) => {
+                const { name, value } = e.target;
+                setFormData(prev => ({
+                    ...prev,
+                    [name]: value
+                }));
+            };
+
+            const handleSubmit = () => {
+                if (formData.name && formData.email) {
+                    alert(`Welcome, ${formData.name}! Form submitted successfully.`);
+                    setFormData({ name: '', email: '' });
+                } else {
+                    alert('Please fill in all fields.');
+                }
+            };
+
+            return (
+                <div>
+                    <div className="card">
+                        <h3>Welcome to React Mobile App</h3>
+                        <p>This is a pixel-perfect implementation of a mobile app interface using React JS. The design follows modern UI/UX principles with smooth navigation and responsive layout.</p>
+                    </div>
+
+                    <div className="card">
+                        <h3>Get Started</h3>
+                        <div className="input-group">
+                            <label htmlFor="name">Full Name</label>
+                            <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                value={formData.name}
+                                onChange={handleInputChange}
+                                placeholder="Enter your full name"
+                            />
+                        </div>
+                        <div className="input-group">
+                            <label htmlFor="email">Email Address</label>
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                value={formData.email}
+                                onChange={handleInputChange}
+                                placeholder="Enter your email address"
+                            />
+                        </div>
+                        <button className="btn btn-primary" onClick={handleSubmit}>
+                            Submit Information
+                        </button>
+                    </div>
+
+                    <div className="card">
+                        <h3>Features</h3>
+                        <div className="list-item">
+                            <div className="list-item-icon">📱</div>
+                            <div className="list-item-content">
+                                <div className="list-item-title">Mobile-First Design</div>
+                                <div className="list-item-subtitle">Responsive and optimized for mobile devices</div>
+                            </div>
+                        </div>
+                        <div className="list-item">
+                            <div className="list-item-icon">⚡</div>
+                            <div className="list-item-content">
+                                <div className="list-item-title">Fast Performance</div>
+                                <div className="list-item-subtitle">Optimized React components for smooth interactions</div>
+                            </div>
+                        </div>
+                        <div className="list-item">
+                            <div className="list-item-icon">🎨</div>
+                            <div className="list-item-content">
+                                <div className="list-item-title">Modern UI</div>
+                                <div className="list-item-subtitle">Clean design with smooth animations</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // Profile Page Component
+        function ProfilePage() {
+            const [userData, setUserData] = useState({
+                name: 'John Doe',
+                email: 'john.doe@example.com',
+                bio: 'Software Developer passionate about React and mobile development.'
+            });
+
+            const handleUpdateProfile = () => {
+                alert('Profile updated successfully!');
+            };
+
+            return (
+                <div>
+                    <div className="profile-section">
+                        <div className="profile-avatar">
+                            {userData.name.split(' ').map(n => n[0]).join('')}
+                        </div>
+                        <h3>{userData.name}</h3>
+                        <p style={{ color: '#6c757d', marginBottom: '20px' }}>{userData.email}</p>
+                    </div>
+
+                    <div className="card">
+                        <h3>Profile Information</h3>
+                        <div className="input-group">
+                            <label htmlFor="profileName">Name</label>
+                            <input
+                                type="text"
+                                id="profileName"
+                                value={userData.name}
+                                onChange={(e) => setUserData({...userData, name: e.target.value})}
+                            />
+                        </div>
+                        <div className="input-group">
+                            <label htmlFor="profileEmail">Email</label>
+                            <input
+                                type="email"
+                                id="profileEmail"
+                                value={userData.email}
+                                onChange={(e) => setUserData({...userData, email: e.target.value})}
+                            />
+                        </div>
+                        <div className="input-group">
+                            <label htmlFor="profileBio">Bio</label>
+                            <input
+                                type="text"
+                                id="profileBio"
+                                value={userData.bio}
+                                onChange={(e) => setUserData({...userData, bio: e.target.value})}
+                            />
+                        </div>
+                        <button className="btn btn-primary" onClick={handleUpdateProfile}>
+                            Update Profile
+                        </button>
+                    </div>
+
+                    <div className="card">
+                        <h3>Account Statistics</h3>
+                        <div className="list-item">
+                            <div className="list-item-icon">📊</div>
+                            <div className="list-item-content">
+                                <div className="list-item-title">Sessions</div>
+                                <div className="list-item-subtitle">24 active sessions this month</div>
+                            </div>
+                        </div>
+                        <div className="list-item">
+                            <div className="list-item-icon">🏆</div>
+                            <div className="list-item-content">
+                                <div className="list-item-title">Achievements</div>
+                                <div className="list-item-subtitle">5 milestones completed</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // Settings Page Component
+        function SettingsPage() {
+            const [settings, setSettings] = useState({
+                notifications: true,
+                darkMode: false,
+                autoSave: true
+            });
+
+            const handleSettingChange = (key) => {
+                setSettings(prev => ({
+                    ...prev,
+                    [key]: !prev[key]
+                }));
+            };
+
+            const handleResetSettings = () => {
+                setSettings({
+                    notifications: true,
+                    darkMode: false,
+                    autoSave: true
+                });
+                alert('Settings reset to default values!');
+            };
+
+            return (
+                <div>
+                    <div className="card">
+                        <h3>App Settings</h3>
+                        <div className="list-item">
+                            <div className="list-item-icon">🔔</div>
+                            <div className="list-item-content">
+                                <div className="list-item-title">Notifications</div>
+                                <div className="list-item-subtitle">Receive push notifications</div>
+                            </div>
+                            <button 
+                                className={`btn ${settings.notifications ? 'btn-primary' : 'btn-secondary'}`}
+                                onClick={() => handleSettingChange('notifications')}
+                                style={{ width: 'auto', padding: '8px 16px', fontSize: '14px' }}
+                            >
+                                {settings.notifications ? 'ON' : 'OFF'}
+                            </button>
+                        </div>
+                        <div className="list-item">
+                            <div className="list-item-icon">🌙</div>
+                            <div className="list-item-content">
+                                <div className="list-item-title">Dark Mode</div>
+                                <div className="list-item-subtitle">Switch to dark theme</div>
+                            </div>
+                            <button 
+                                className={`btn ${settings.darkMode ? 'btn-primary' : 'btn-secondary'}`}
+                                onClick={() => handleSettingChange('darkMode')}
+                                style={{ width: 'auto', padding: '8px 16px', fontSize: '14px' }}
+                            >
+                                {settings.darkMode ? 'ON' : 'OFF'}
+                            </button>
+                        </div>
+                        <div className="list-item">
+                            <div className="list-item-icon">💾</div>
+                            <div className="list-item-content">
+                                <div className="list-item-title">Auto Save</div>
+                                <div className="list-item-subtitle">Automatically save changes</div>
+                            </div>
+                            <button 
+                                className={`btn ${settings.autoSave ? 'btn-primary' : 'btn-secondary'}`}
+                                onClick={() => handleSettingChange('autoSave')}
+                                style={{ width: 'auto', padding: '8px 16px', fontSize: '14px' }}
+                            >
+                                {settings.autoSave ? 'ON' : 'OFF'}
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="card">
+                        <h3>Account Actions</h3>
+                        <button className="btn btn-secondary" onClick={handleResetSettings}>
+                            Reset to Default Settings
+                        </button>
+                        <button className="btn btn-secondary" onClick={() => alert('Data exported successfully!')}>
+                            Export Data
+                        </button>
+                        <button className="btn btn-secondary" onClick={() => alert('Cache cleared successfully!')}>
+                            Clear Cache
+                        </button>
+                    </div>
+
+                    <div className="card">
+                        <h3>About</h3>
+                        <p>React Mobile App v1.0.0</p>
+                        <p>Built with React JS for Educase Assignment</p>
+                        <p>© 2025 - Pixel Perfect Design Implementation</p>
+                    </div>
+                </div>
+            );
+        }
+
+        // Bottom Navigation Component
+        function BottomNavigation({ activeTab, onTabChange }) {
+            const navItems = [
+                { id: 'home', label: 'Home', icon: '🏠' },
+                { id: 'profile', label: 'Profile', icon: '👤' },
+                { id: 'settings', label: 'Settings', icon: '⚙️' }
+            ];
+
+            return (
+                <div className="bottom-nav">
+                    {navItems.map(item => (
+                        <div
+                            key={item.id}
+                            className={`bottom-nav-item ${activeTab === item.id ? 'active' : ''}`}
+                            onClick={() => onTabChange(item.id)}
+                        >
+                            <div className="bottom-nav-icon">{item.icon}</div>
+                            <div className="bottom-nav-label">{item.label}</div>
+                        </div>
+                    ))}
+                </div>
+            );
+        }
+
+        // Render the App
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>
